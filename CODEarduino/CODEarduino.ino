@@ -1,16 +1,14 @@
-/*** 
 const int redPin = 2;
 const int greenPin = 4;
 
 void setup() {
- Serial.begin(9600);
- pinMode(greenPin, OUTPUT);
- pinMode(redPin, OUTPUT);
-
+  Serial.begin(9600);
+  pinMode(greenPin, OUTPUT);
+  pinMode(redPin, OUTPUT);
 }
 
 void loop() {
-  if (Serial.available()>0){
+  if (Serial.available() > 0){
     String msg = Serial.readString();
 
     if (msg == "ON"){
@@ -28,4 +26,4 @@ void loop() {
       }
     }
   }
-} ***/
+} 
