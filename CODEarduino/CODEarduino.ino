@@ -13,9 +13,11 @@ void loop() {
 
     if (msg == "ON"){
       digitalWrite(greenPin, HIGH);
+      digitalWrite(redPin, LOW);
     }
     else if (msg == "OFF"){
       digitalWrite(greenPin, LOW);
+      digitalWrite(redPin, LOW);
     }
     else {
       for (int i = 0; i < 5; i++){
@@ -26,4 +28,4 @@ void loop() {
       }
     }
   }
-} 
+}
