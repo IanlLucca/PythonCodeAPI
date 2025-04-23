@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, Switch, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -25,6 +25,24 @@ export default function TelaDispositivo() {
   const iconeTamanho = 30;
   const iconeCor = 'white';
 
+const toggleLed = async (dispositivo, estado) => {
+  try {
+    const url = estado ? 'http://ip/on' : 'http://ip/off';
+    
+    const response = await fetch(url, {
+      method: 'GET', 
+    });
+
+    const resposta = await response.text(); 
+
+    
+
+  } catch (error) {
+    Alert.alert('Erro ao comunicar com o ESP32');
+    console.error(error);
+  }
+};
+
   const Localizacao = () => {
     return (
       <View style={styles.container}>
@@ -49,7 +67,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.sensorContainer}>
         <Text style={styles.sensorTexto}>Sensor de Temperatura</Text>
-        <Switch value={sensorTempLigado} onValueChange={() => setSensorTempLigado(!sensorTempLigado)} />
+        <Switch value={sensorTempLigado} onValueChange={() => { setSensorTempLigado(!sensorTempLigado); toggleLed('sensorTemp', !sensorTempLigado); }} />
       </View>
     );
   };
@@ -58,7 +76,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.luzContainer}>
         <Text style={styles.luzTexto}>Luz Sala</Text>
-        <Switch value={luzSalaLigada} onValueChange={() => setLuzSalaLigada(!luzSalaLigada)} />
+        <Switch value={luzSalaLigada} onValueChange={() => { setLuzSalaLigada(!luzSalaLigada); toggleLed('luzSala', !luzSalaLigada); }} />
       </View>
     );
   };
@@ -67,7 +85,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.sensorContainer}>
         <Text style={styles.sensorTexto}>Sensor de Fumaça</Text>
-        <Switch value={sensorFumacaLigado} onValueChange={() => setSensorFumacaLigado(!sensorFumacaLigado)} />
+        <Switch value={sensorFumacaLigado} onValueChange={() => { setSensorFumacaLigado(!sensorFumacaLigado); toggleLed('sensorFumaca', !sensorFumacaLigado); }} />
       </View>
     );
   };
@@ -76,7 +94,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.luzContainer}>
         <Text style={styles.luzTexto}>Luz Cozinha</Text>
-        <Switch value={luzCozinhaLigada} onValueChange={() => setLuzCozinhaLigada(!luzCozinhaLigada)} />
+        <Switch value={luzCozinhaLigada} onValueChange={() => { setLuzCozinhaLigada(!luzCozinhaLigada); toggleLed('luzCozinha', !luzCozinhaLigada); }} />
       </View>
     );
   };
@@ -85,7 +103,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.luzContainer}>
         <Text style={styles.luzTexto}>Luz Quarto</Text>
-        <Switch value={luzQuartoLigada} onValueChange={() => setLuzQuartoLigada(!luzQuartoLigada)} />
+        <Switch value={luzQuartoLigada} onValueChange={() => { setLuzQuartoLigada(!luzQuartoLigada); toggleLed('luzQuarto', !luzQuartoLigada); }} />
       </View>
     );
   };
@@ -94,7 +112,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.luzContainer}>
         <Text style={styles.luzTexto}>Luz Banheiro</Text>
-        <Switch value={luzBanheiroLigada} onValueChange={() => setLuzBanheiroLigada(!luzBanheiroLigada)} />
+        <Switch value={luzBanheiroLigada} onValueChange={() => { setLuzBanheiroLigada(!luzBanheiroLigada); toggleLed('luzBanheiro', !luzBanheiroLigada); }} />
       </View>
     );
   };
@@ -103,7 +121,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.luzContainer}>
         <Text style={styles.luzTexto}>Luz Externa</Text>
-        <Switch value={luzExternaLigada} onValueChange={() => setLuzExternaLigada(!luzExternaLigada)} />
+        <Switch value={luzExternaLigada} onValueChange={() => { setLuzExternaLigada(!luzExternaLigada); toggleLed('luzExterna', !luzExternaLigada); }} />
       </View>
     );
   };
@@ -112,7 +130,7 @@ export default function TelaDispositivo() {
     return (
       <View style={styles.alarmeContainer}>
         <Text style={styles.alarmeTexto}>Alarme</Text>
-        <Switch value={alarmeLigado} onValueChange={() => setAlarmeLigado(!alarmeLigado)} />
+        <Switch value={alarmeLigado} onValueChange={() => { setAlarmeLigado(!alarmeLigado); toggleLed('alarme', !alarmeLigado); }} />
       </View>
     );
   };
