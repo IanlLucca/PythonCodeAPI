@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <WebServer.h>
 
 const char* ssid = "Wifi 2.4GHz";
 const char* password = "Senha_do_Wifi";
