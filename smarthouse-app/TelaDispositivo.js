@@ -9,12 +9,7 @@ export default function TelaDispositivo() {
   const [temperatura, setTemperatura] = useState(15);
   const [localizacao, setLocalizacao] = useState('São Paulo');
   const [sensorTempLigado, setSensorTempLigado] = useState(true);
-  const [luzSalaLigada, setLuzSalaLigada] = useState(false);
   const [sensorFumacaLigado, setSensorFumacaLigado] = useState(true);
-  const [luzCozinhaLigada, setLuzCozinhaLigada] = useState(false);
-  const [luzQuartoLigada, setLuzQuartoLigada] = useState(false);
-  const [luzBanheiroLigada, setLuzBanheiroLigada] = useState(false);
-  const [luzExternaLigada, setLuzExternaLigada] = useState(false);
   const [alarmeLigado, setAlarmeLigado] = useState(false);
 
   const sensacaoTermica = 10;
@@ -25,23 +20,7 @@ export default function TelaDispositivo() {
   const iconeTamanho = 30;
   const iconeCor = 'white';
 
-const toggleLed = async (dispositivo, estado) => {
-  try {
-    const url = estado ? 'http://ip/on' : 'http://ip/off';
-    
-    const response = await fetch(url, {
-      method: 'GET', 
-    });
-
-    const resposta = await response.text(); 
-
-    
-
-  } catch (error) {
-    Alert.alert('Erro ao comunicar com o ESP32');
-    console.error(error);
-  }
-};
+const ipESP32 = '192.168.53.198';
 
   const Localizacao = () => {
     return (
@@ -73,13 +52,38 @@ const toggleLed = async (dispositivo, estado) => {
   };
 
   const LuzesSala = () => {
-    return (
-      <View style={styles.luzContainer}>
-        <Text style={styles.luzTexto}>Luz Sala</Text>
-        <Switch value={luzSalaLigada} onValueChange={() => { setLuzSalaLigada(!luzSalaLigada); toggleLed('luzSala', !luzSalaLigada); }} />
-      </View>
-    );
+    const [luzSalaLigada, setLuzSalaLigada] = useState(false);
+
+  const toggleLed = async (led, novoEstado) => {
+    const comando = novoEstado ? 'on' : 'off';
+    const url = `http://${ipESP32}/led1/${comando}`;
+
+    try {
+      const resposta = await fetch(url);
+      if (resposta.ok) {
+        console.log(`Comando ${comando} enviado com sucesso`);
+      } else {
+        console.error('Erro ao enviar comando para ESP32');
+      }
+    } catch (erro) {
+      console.error('Erro de conexão:', erro);
+    }
   };
+
+  return (
+    <View style={styles.luzContainer}>
+      <Text style={styles.luzTexto}>Luz Sala</Text>
+      <Switch
+        value={luzSalaLigada}
+        onValueChange={() => {
+          const novoEstado = !luzSalaLigada;
+          setLuzSalaLigada(novoEstado);
+          toggleLed('luzSala', novoEstado);
+        }}
+      />
+    </View>
+  );
+};
 
   const SensorFumaca = () => {
     return (
@@ -91,40 +95,140 @@ const toggleLed = async (dispositivo, estado) => {
   };
 
   const LuzesCozinha = () => {
-    return (
-      <View style={styles.luzContainer}>
-        <Text style={styles.luzTexto}>Luz Cozinha</Text>
-        <Switch value={luzCozinhaLigada} onValueChange={() => { setLuzCozinhaLigada(!luzCozinhaLigada); toggleLed('luzCozinha', !luzCozinhaLigada); }} />
-      </View>
-    );
+    const [luzCozinhaLigada, setLuzCozinhaLigada] = useState(false);
+
+  const toggleLed = async (led, novoEstado) => {
+    const comando = novoEstado ? 'on' : 'off';
+    const url = `http://${ipESP32}/led2/${comando}`;
+
+    try {
+      const resposta = await fetch(url);
+      if (resposta.ok) {
+        console.log(`Comando ${comando} enviado com sucesso`);
+      } else {
+        console.error('Erro ao enviar comando para ESP32');
+      }
+    } catch (erro) {
+      console.error('Erro de conexão:', erro);
+    }
   };
+
+  return (
+    <View style={styles.luzContainer}>
+      <Text style={styles.luzTexto}>Luz Cozinha</Text>
+      <Switch
+        value={luzCozinhaLigada}
+        onValueChange={() => {
+          const novoEstado = !luzCozinhaLigada;
+          setLuzCozinhaLigada(novoEstado);
+          toggleLed('luzCozinha', novoEstado);
+        }}
+      />
+    </View>
+  );
+};
 
   const LuzesQuarto = () => {
-    return (
-      <View style={styles.luzContainer}>
-        <Text style={styles.luzTexto}>Luz Quarto</Text>
-        <Switch value={luzQuartoLigada} onValueChange={() => { setLuzQuartoLigada(!luzQuartoLigada); toggleLed('luzQuarto', !luzQuartoLigada); }} />
-      </View>
-    );
+    const [luzQuartoLigada, setLuzQuartoLigada] = useState(false);
+
+  const toggleLed = async (led, novoEstado) => {
+    const comando = novoEstado ? 'on' : 'off';
+    const url = `http://${ipESP32}/led3/${comando}`;
+
+    try {
+      const resposta = await fetch(url);
+      if (resposta.ok) {
+        console.log(`Comando ${comando} enviado com sucesso`);
+      } else {
+        console.error('Erro ao enviar comando para ESP32');
+      }
+    } catch (erro) {
+      console.error('Erro de conexão:', erro);
+    }
   };
+
+  return (
+    <View style={styles.luzContainer}>
+      <Text style={styles.luzTexto}>Luz Quarto</Text>
+      <Switch
+        value={luzQuartoLigada}
+        onValueChange={() => {
+          const novoEstado = !luzQuartoLigada;
+          setLuzQuartoLigada(novoEstado);
+          toggleLed('luzQuarto', novoEstado);
+        }}
+      />
+    </View>
+  );
+};
 
   const LuzesBanheiro = () => {
-    return (
-      <View style={styles.luzContainer}>
-        <Text style={styles.luzTexto}>Luz Banheiro</Text>
-        <Switch value={luzBanheiroLigada} onValueChange={() => { setLuzBanheiroLigada(!luzBanheiroLigada); toggleLed('luzBanheiro', !luzBanheiroLigada); }} />
-      </View>
-    );
+    const [luzBanheiroLigada, setLuzBanheiroLigada] = useState(false);
+
+  const toggleLed = async (led, novoEstado) => {
+    const comando = novoEstado ? 'on' : 'off';
+    const url = `http://${ipESP32}/led4/${comando}`;
+
+    try {
+      const resposta = await fetch(url);
+      if (resposta.ok) {
+        console.log(`Comando ${comando} enviado com sucesso`);
+      } else {
+        console.error('Erro ao enviar comando para ESP32');
+      }
+    } catch (erro) {
+      console.error('Erro de conexão:', erro);
+    }
   };
 
+  return (
+    <View style={styles.luzContainer}>
+      <Text style={styles.luzTexto}>Luz Banheiro</Text>
+      <Switch
+        value={luzBanheiroLigada}
+        onValueChange={() => {
+          const novoEstado = !luzBanheiroLigada;
+          setLuzBanheiroLigada(novoEstado);
+          toggleLed('luzBanheiro', novoEstado);
+        }}
+      />
+    </View>
+  );
+};
+
   const LuzesExterna = () => {
-    return (
-      <View style={styles.luzContainer}>
-        <Text style={styles.luzTexto}>Luz Externa</Text>
-        <Switch value={luzExternaLigada} onValueChange={() => { setLuzExternaLigada(!luzExternaLigada); toggleLed('luzExterna', !luzExternaLigada); }} />
-      </View>
-    );
+    const [luzExternaLigada, setLuzExternaLigada] = useState(false);
+
+  const toggleLed = async (led, novoEstado) => {
+    const comando = novoEstado ? 'on' : 'off';
+    const url = `http://${ipESP32}/led5/${comando}`;
+
+    try {
+      const resposta = await fetch(url);
+      if (resposta.ok) {
+        console.log(`Comando ${comando} enviado com sucesso`);
+      } else {
+        console.error('Erro ao enviar comando para ESP32');
+      }
+    } catch (erro) {
+      console.error('Erro de conexão:', erro);
+    }
   };
+
+  return (
+    <View style={styles.luzContainer}>
+      <Text style={styles.luzTexto}>Luz Externa</Text>
+      <Switch
+        value={luzExternaLigada}
+        onValueChange={() => {
+          const novoEstado = !luzExternaLigada;
+          setLuzExternaLigada(novoEstado);
+          toggleLed('luzExterna', novoEstado);
+        }}
+      />
+    </View>
+  );
+};
 
   const Alarme = () => {
     return (
