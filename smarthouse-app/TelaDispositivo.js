@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { View, Text, Switch, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -20,7 +20,7 @@ export default function TelaDispositivo() {
   const iconeTamanho = 30;
   const iconeCor = 'white';
 
-const ipESP32 = '192.168.53.198';
+const ipESP32 = '192.168.108.198';
 
   const Localizacao = () => {
     return (
@@ -43,13 +43,36 @@ const ipESP32 = '192.168.53.198';
   };
 
   const SensorTemperatura = () => {
-    return (
-      <View style={styles.sensorContainer}>
-        <Text style={styles.sensorTexto}>Sensor de Temperatura</Text>
-        <Switch value={sensorTempLigado} onValueChange={() => { setSensorTempLigado(!sensorTempLigado); toggleLed('sensorTemp', !sensorTempLigado); }} />
-      </View>
-    );
-  };
+  const [temperatura, setTemperatura] = useState(false);
+
+  useEffect(() => {
+    const fetchTemperatura = async () => {
+      try {
+        const response = await fetch(`http://${ipESP32}/temp`);
+        const temp = await response.text(); 
+        setTemperatura(temp);
+      } catch (error) {
+        console.error("Erro ao buscar temperatura:", error);
+        setTemperatura("Erro");
+      }
+    };
+
+    
+    fetchTemperatura();
+    const intervalo = setInterval(fetchTemperatura, 10000);
+
+    return () => clearInterval(intervalo); 
+  }, []);
+
+  return (
+    <View style={styles.sensorContainer}>
+      <Text style={styles.sensorTexto}>Temperatura da Casa:</Text>
+      <Text style={styles.sensorValor}>
+        {temperatura !== null ? `${temperatura} °C` : 'Carregando...'}
+      </Text>
+    </View>
+  );
+};
 
   const LuzesSala = () => {
     const [luzSalaLigada, setLuzSalaLigada] = useState(false);
